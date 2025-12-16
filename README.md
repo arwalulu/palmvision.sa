@@ -1,6 +1,6 @@
 # 🌴 PalmVision – AI-Based Date Palm Disease Detection System
 
-PalmVision is an intelligent decision-support system for **date palm disease detection** using deep learning and computer vision.  
+PalmVision is an intelligent decision-support system for **date palm disease detection** using deep learning.  
 The system leverages **EfficientNetB0 enhanced with CBAM attention** to classify palm leaf images into four disease categories and provides actionable recommendations via a web-based interface.
 
 ---
@@ -105,4 +105,4 @@ frontend/index.html
 ## 👩‍💻 Authors
 Developed by : Arwa - Amalia - Dalia
 Effat University – Senior Project
-Field: AI, Computer Vision, Precision Agriculture
+Field: Computer Science , AI
