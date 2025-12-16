@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>PalmVision Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
+
+    <!-- Your dashboard CSS (inline) -->
+    <style>
+        /* ===================== THEME ===================== */
+        :root {
+            --blue: #1e90ff;
+            --navy: #051937;
+            --green: #22c55e;
+            --danger: #ef4444;
+            --bg: #0a1128;
+            --card: rgba(255, 255, 255, 0.06);
+            --border: rgba(255, 255, 255, 0.12);
+            --text: #e5f0ff;
+            --muted: #9aa7bd;
+            --glow: 0 0 20px rgba(30, 144, 255, 0.4);
+            --radius: 20px;
+        }
+
+        body.light {
+            --bg: #f4f7ff;
+            --card: #ffffff;
+            --border: #e5e7eb;
+            --text: #0f172a;
+            --muted: #475569;
+            --glow: 0 0 0 transparent;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            font-family: Poppins, Arial, sans-serif;
+        }
+
+        body {
+            background: radial-gradient(circle at top, #0f2a5f 0%, var(--bg) 60%);
+            color: var(--text);
+            transition: 0.4s;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        .header-alerts {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .alert-icon,
+        .tip-icon {
+            position: relative;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .alert-count,
+        .tip-count {
+            position: absolute;
+            top: -6px;
+            right: -10px;
+            background: var(--danger);
+            color: white;
+            font-size: 0.7rem;
+            font-weight: bold;
+            padding: 2px 6px;
+            border-radius: 50%;
+        }
+
+        /* ---------- Subtle Saudi Night Stars ---------- */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+
+            background-image: radial-gradient(2px 2px at 20% 30%,
+                    rgba(255, 255, 255, 0.8),
+                    transparent),
+                radial-gradient(1.5px 1.5px at 80% 20%,
+                    rgba(255, 255, 255, 0.7),
+                    transparent),
+                radial-gradient(2px 2px at 60% 70%,
+                    rgba(255, 255, 255, 0.6),
+                    transparent),
+                radial-gradient(1.5px 1.5px at 40% 80%,
+                    rgba(255, 255, 255, 0.8),
+                    transparent),
+                radial-gradient(2.5px 2.5px at 10% 50%,
+                    rgba(255, 255, 255, 0.9),
+                    transparent),
+                radial-gradient(2px 2px at 90% 60%,
+                    rgba(255, 255, 255, 0.7),
+                    transparent),
+                radial-gradient(1.5px 1.5px at 30% 10%,
+                    rgba(255, 255, 255, 0.7),
+                    transparent),
+                radial-gradient(2px 2px at 70% 40%,
+                    rgba(255, 255, 255, 0.8),
+                    transparent);
+
+            background-repeat: repeat;
+            background-size: 800px 800px;
+            opacity: 0.35;
+            animation: starsMove 120s linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes starsMove {
+            from {
+                transform: translateY(0);
+            }
+
+            to {
+                transform: translateY(-800px);
+            }
+        }
+
+        /* ===================== HEADER ===================== */
+        header {
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--blue);
+            text-shadow: var(--glow);
+        }
+
+        nav a {
+            margin: 0 1rem;
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+        }
+
+        nav a::after {
+            content: "";
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: var(--blue);
+            left: 50%;
+            bottom: -6px;
+            transition: 0.3s;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+            left: 0;
+        }
+
+        .toggle-btn {
+            padding: 0.5rem 1.1rem;
+            border: none;
+            border-radius: 999px;
+            background: linear-gradient(45deg, var(--blue), var(--green));
+            color: white;
+            cursor: pointer;
+        }
+
+        /* ===================== MAIN ===================== */
+        main {
+            padding: 3rem 2rem;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section h2 {
+            margin-bottom: 1.2rem;
+        }
+
+        /* ===================== CARDS & GRID ===================== */
+        .grid,
+        .dashboard-grid {
+            display: grid;
+            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            padding: 1.8rem;
+            border-radius: var(--radius);
+            backdrop-filter: blur(12px);
+            box-shadow: var(--glow);
+            transition: 0.3s;
+            position: relative;
+        }
+
+        .card:hover {
+            transform: translateY(-6px) scale(1.01);
+            box-shadow: 0 0 30px rgba(34, 197, 94, 0.4);
+        }
+
+        /* ===================== STATS ===================== */
+        .stat-number {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-top: 0.6rem;
+        }
+
+        .danger {
+            color: var(--danger);
+        }
+
+        .online {
+            color: var(--green);
+        }
+
+        /* ===================== BUTTONS ===================== */
+        .btn,
+        .btn-secondary {
+            padding: 0.9rem 1.4rem;
+            border-radius: 999px;
+            border: none;
+            background: linear-gradient(45deg, var(--blue), var(--green));
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 1rem;
+        }
+
+        .btn:hover,
+        .btn-secondary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 25px rgba(34, 197, 94, 0.5);
+        }
+
+        /* ===================== PROFILE ===================== */
+        .profile span,
+        .profile-field span {
+            display: block;
+            margin-bottom: 0.6rem;
+        }
+
+        /* ===================== CHATBOT ===================== */
+        .chatbox,
+        .chatbot-box {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            height: 350px;
+        }
+
+        .chat-window,
+        .chat-history {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .chat-bubble,
+        .message {
+            max-width: 80%;
+            padding: 10px 14px;
+            border-radius: 16px;
+            margin-bottom: 10px;
+            animation: pop 0.3s ease;
+        }
+
+        .chat-bubble.bot,
+        .message.bot {
+            background: linear-gradient(45deg, var(--blue), var(--green));
+            color: white;
+            align-self: flex-start;
+            border-bottom-left-radius: 0;
+        }
+
+        .chat-bubble.user,
+        .message.user {
+            background: rgba(255, 255, 255, 0.12);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 0;
+        }
+
+        .chat-input {
+            display: flex;
+            gap: 0.6rem;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 12px 16px;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            outline: none;
+            background: transparent;
+            color: var(--text);
+        }
+
+        @keyframes pop {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* ===================== FOOTER ===================== */
+        footer {
+            padding: 2rem;
+            text-align: center;
+            color: var(--muted);
+        }
+    </style>
+
+    <!-- Chart.js for the disease trend -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Your backend-connected JS -->
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+    <header>
+        <div class="logo">PalmVision</div>
+
+        <nav>
+            <a href="#home">Home</a>
+            <a href="#drone-dashboard">Drone</a>
+            <a href="#user">User</a>
+            <a href="#chatbot">Chatbot</a>
+        </nav>
+
+        <div class="header-alerts">
+            <div class="alert-icon" onclick="toggleAlerts()">
+                ⚠️ <span class="alert-count" id="alertCount">2</span>
+            </div>
+            <div class="tip-icon" onclick="toggleTips()">
+                💡 <span class="tip-count" id="tipCount">3</span>
+            </div>
+        </div>
+
+        <button class="toggle-btn" onclick="toggleMode()">Theme</button>
+    </header>
+
+    <main>
+        <!-- HOME -->
+        <section id="home" class="section">
+            <h2>Farm Overview</h2>
+
+            <div class="dashboard-grid">
+                <div class="card">
+                    <h3>Total Leaves Scanned</h3>
+                    <div class="stat-number" id="total-leaves">124</div>
+                </div>
+
+                <div class="card">
+                    <h3>Healthy Leaves</h3>
+                    <div class="stat-number online" id="healthy-leaves">98</div>
+                </div>
+
+                <div class="card">
+                    <h3>Diseased Leaves</h3>
+                    <div class="stat-number danger" id="diseased-leaves">26</div>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top: 2rem">
+                <h3>Disease Trend (Last 7 Days)</h3>
+                <canvas id="disease-chart"></canvas>
+            </div>
+
+            <div class="card" style="margin-top:2rem">
+                <h3>Upload Leaf Image</h3>
+                <p style="margin:0.8rem 0;color:var(--muted)">
+                    Choose a palm leaf photo to get a simulated classification and recommendation.
+                </p>
+
+                <input type="file" id="leaf-file" accept="image/*" style="margin-top:0.5rem;" />
+                <button class="btn" id="btn-predict">Analyze Leaf</button>
+
+                <div id="predict-result" style="margin-top:1rem;color:var(--muted);font-size:0.95rem;"></div>
+            </div>
+
+
+
+            <div class="card" style="margin-top: 2rem">
+                <h3>Latest AI Report</h3>
+                <p style="margin: 0.8rem 0; color: var(--muted)" id="farm-summary-text">
+                    Download your recent AI-generated farm health summary:
+                </p>
+                <button class="btn" id="report-link">Download PDF</button>
+            </div>
+        </section>
+
+        <!-- DRONE -->
+        <section id="drone-dashboard" class="section">
+            <h2>Drone Dashboard</h2>
+
+            <div class="card">
+                <p>
+                    <b>Status:</b>
+                    <span class="online" id="drone-status">Offline</span>
+                </p>
+                <p id="drone-battery"><b>Battery:</b> 73%</p>
+                <p id="drone-last-flight"><b>Last Flight:</b> 18 minutes</p>
+                <!-- Button connected to backend via script.js -->
+                <button class="btn-secondary" id="btn-start-scan">
+                    Start Drone Scan
+                </button>
+            </div>
+        </section>
+
+        <!-- USER -->
+        <section id="user" class="section">
+            <h2>User Profile</h2>
+
+            <div class="card profile">
+                <span><b>Name:</b> <span id="user-name">Farmer Ali</span></span>
+                <span><b>Email:</b> <span id="user-email">farmer@example.com</span></span>
+                <span><b>Farm ID:</b> 24-PM-0029</span>
+                <span><b>Location:</b> Al-Ahsa, SA</span>
+            </div>
+        </section>
+
+        <!-- CHATBOT (backend-connected) -->
+        <section id="chatbot" class="section">
+            <h2>Agro AI Assistant</h2>
+
+            <div class="card chatbox">
+                <div class="chat-window chat-history" id="chat-history">
+                    <div class="chat-bubble bot">
+                        Ask me anything about palms, soil, water, and diseases.
+                    </div>
+                </div>
+
+                <div class="chat-input">
+                    <input type="text" id="chat-input" placeholder="Ask about palms, soil, water, diseases…" />
+                </div>
+            </div>
+        </section>
+
+        <!-- ALERTS / NOTIFICATIONS -->
+        <section id="alerts" class="section">
+            <h2>Farm Alerts & Notifications</h2>
+
+            <div class="grid">
+                <div class="card alert-card" style="border-left: 6px solid var(--green)">
+                    <h3>Healthy Condition</h3>
+                    <p>All palms are healthy. No immediate actions required.</p>
+                </div>
+
+                <div class="card alert-card" style="border-left: 6px solid #facc15">
+                    <h3>Warning</h3>
+                    <p>Soil moisture is low in the northern field. Irrigation recommended.</p>
+                </div>
+
+                <div class="card alert-card" style="border-left: 6px solid var(--danger)">
+                    <h3>Critical</h3>
+                    <p>5 palms show early signs of disease. Inspect immediately.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SUSTAINABILITY / TIPS -->
+        <section id="tips" class="section">
+            <h2>Sustainability & Farming Tips</h2>
+
+            <div class="grid">
+                <div class="card tip-card">
+                    <h3>Watering Tip</h3>
+                    <p>Water palms today in the morning to ensure proper absorption.</p>
+                </div>
+
+                <div class="card tip-card">
+                    <h3>Fungus Check</h3>
+                    <p>Inspect northern and eastern fields for early signs of fungus.</p>
+                </div>
+
+                <div class="card tip-card">
+                    <h3>Fertilizer Guidance</h3>
+                    <p>Apply organic compost to improve soil nutrients for young palms.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>PalmVision — Smart Saudi Farming 🇸🇦</footer>
+
+    <!-- Small helpers for theme + alerts icons (do NOT touch backend logic) -->
+    <script>
+        function toggleMode() {
+            document.body.classList.toggle("light");
+        }
+
+        function toggleAlerts() {
+            const alerts = document.getElementById("alerts");
+            alerts && alerts.scrollIntoView({ behavior: "smooth" });
+        }
+
+        function toggleTips() {
+            const tips = document.getElementById("tips");
+            tips && tips.scrollIntoView({ behavior: "smooth" });
+        }
+    </script>
+</body>
+
+</html>

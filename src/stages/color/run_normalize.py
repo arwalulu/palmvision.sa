@@ -88,3 +88,11 @@ def main():
 
 if __name__ == "__main__":
     sys.exit(main())
+# =========================
+# CLASS NAMES (from config)
+# =========================
+
+# This assumes your default.yaml has something like:
+# classes: ["Bug", "Dubas", "Healthy", "Honey"]
+_cfg = load_config()
+CLASS_NAMES = list(_cfg.classes)

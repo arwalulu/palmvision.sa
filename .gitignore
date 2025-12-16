@@ -1,21 +1,25 @@
-# Virtual environment
-.venv/
-
-# Python cache
+# Python
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
+.venv/
+env/
 
-# macOS junk files
-.DS_Store
+# Training outputs
+experiments/
+logs/
+tb/
 
-# Jupyter cache
-*.ipynb_checkpoints/
-
-# Datasets (never commit to GitHub)
+# Large datasets
 data/raw/
 data/clean/
 data/normalized/
-manifests/*.cache
 
-# Training runs
-experiments/
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
