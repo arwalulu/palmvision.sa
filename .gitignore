@@ -1,25 +1,11 @@
-# Python
 __pycache__/
 *.pyc
-*.pyo
-*.pyd
 .venv/
-env/
-
-# Training outputs
 experiments/
-logs/
 tb/
-
-# Large datasets
 data/raw/
 data/clean/
 data/normalized/
-
-# OS files
 .DS_Store
-Thumbs.db
-
-# IDE
 .vscode/
 .idea/
