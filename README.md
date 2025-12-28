@@ -57,7 +57,33 @@ The system consists of:
 - pip package manager
 
 ---
+## 🖼️  Visual Results & System Overview
+### 📂 Sample Data : Shows examples of palm leaf images used for training and testing.
+![Sample Data](sample_data.png)
 
+### 🏗️ System Architecture : Overall architecture of our ststem.
+![System Architecture](system_architecture.png)
+
+### 📊 Confusion Matrix : Performance visualization across all disease classes.
+![Confusion Matrix](confusion_matrix.png)
+
+### 📉 Training & Validation Loss : Model convergence behavior during training.
+![Training vs Validation Loss](train_val_loss.png)
+
+### 📈 Training & Validation Accuracy : Accuracy progression across epochs.
+![Training vs Validation Accuracy](train_val_accuracy.png)
+
+### 🖥️ Full System Interface : Screenshots showing the complete PalmVision system UI.
+![System UI 1](system_ui_1.png)
+![System UI 2](system_ui_2.png)
+![System UI 3](system_ui_3.png)
+
+### 🔄 System Workflow (How It Works) : visualization of system operation.
+![System Workflow 1](system_flow_1.png)
+![System Workflow 2](system_flow_2.png)
+![System Workflow 3](system_flow_3.png)
+
+---
 ## 🚀 Installation Steps
 
 ### Step 1: Clone the Repository
