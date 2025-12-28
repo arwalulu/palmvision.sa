@@ -65,7 +65,7 @@ The system consists of:
 ![System Architecture](system_architecture.png)
 
 ### 📊 Confusion Matrix : Performance visualization across all disease classes.
-![Confusion Matrix](confusion_matrix.png)
+![Confusion Matrix](CN.png)
 
 ### 📉 Training & Validation Loss : Model convergence behavior during training.
 ![Training vs Validation Loss](train_val_loss.png)
